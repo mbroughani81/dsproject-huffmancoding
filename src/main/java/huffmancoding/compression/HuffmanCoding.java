@@ -14,7 +14,7 @@ public class HuffmanCoding {
         this.root = null;
     }
 
-    public void code() {
+    public void code(boolean isLossy) {
         PriorityQueue<HuffmanNode> q = new PriorityQueue<HuffmanNode>(ALPHABET_SIZE, new ImplementComparator());
 
         for (int i = 0; i < ALPHABET_SIZE; i++) {
@@ -50,21 +50,23 @@ public class HuffmanCoding {
         }
     }
 
-    private int printCode(HuffmanNode node, String curCodeword) {
+    private int printCode(HuffmanNode node, String curCodeword, boolean isPrinting) {
         if (node == null)
             return 0;
         if (node.left == null && node.right == null) {
-            System.out.println(node.c + " ==> " + curCodeword);
+            if (isPrinting) {
+                System.out.println(node.c + " ==> " + curCodeword);
+            }
             return curCodeword.length() * node.freq;
         }
         int sum = 0;
-        sum += printCode(node.left, curCodeword + "0");
-        sum += printCode(node.right, curCodeword + "1");
+        sum += printCode(node.left, curCodeword + "0", isPrinting);
+        sum += printCode(node.right, curCodeword + "1", isPrinting);
         return sum;
     }
 
-    public int getNumberOfBitsInEncoded() {
-        return printCode(this.root, "");
+    public int getNumberOfBitsInEncoded(boolean isPrinting) {
+        return printCode(this.root, "", isPrinting);
     }
 }
 

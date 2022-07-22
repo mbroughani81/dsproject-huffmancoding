@@ -19,14 +19,21 @@ public class TestChecker {
 
             int sizeWithoutCompression = 8 * sum;
 
-            HuffmanCoding huffmanCoding = new HuffmanCoding(cnt);
-            huffmanCoding.code();
-            int sizeWithCompression = huffmanCoding.getNumberOfBitsInEncoded();
+            HuffmanCoding losslessHuffmanCoding = new HuffmanCoding(cnt);
+            losslessHuffmanCoding.code(false);
+            int sizeWithLosslessCompression = losslessHuffmanCoding.getNumberOfBitsInEncoded(false);
 
+            HuffmanCoding lossyHuffmanCoding = new HuffmanCoding(cnt);
+            lossyHuffmanCoding.code(true);
+            int sizeWithLossyCompression = lossyHuffmanCoding.getNumberOfBitsInEncoded(false);            
+
+            System.out.printf("#### Results for test %d ####%n", i);
             System.out.printf(">>>>Entropy of given file: %.5f bits/symbol%n", EntropyCalculator.calculateEntropy(cnt));
             System.out.printf(">>>>Number of bits in uncompressed file: %d, %.5f bits/symbol%n", sizeWithoutCompression, ((double)sizeWithoutCompression)/sum);
-            System.out.printf(">>>>Number of bits in compressed file: %d, %.5f bits/symbol%n", sizeWithCompression, ((double)sizeWithCompression)/sum);
-            System.out.printf(">>>>Compression ratio is : %.2f:1 %n", ((double)sizeWithoutCompression)/sizeWithCompression);
+            System.out.printf(">>>>Number of bits in lossless compressed file: %d, %.5f bits/symbol%n", sizeWithLosslessCompression, ((double)sizeWithLosslessCompression)/sum);
+            System.out.printf(">>>>compression ratio for lossless version is : %.2f:1 %n", ((double)sizeWithoutCompression)/sizeWithLosslessCompression);
+            System.out.printf(">>>>Number of bits in lossy compressed file: %d, %.5f bits/symbol%n", sizeWithLossyCompression, ((double)sizeWithLossyCompression)/sum);
+            System.out.printf(">>>>compression ratio for lossy version is : %.2f:1 %n", ((double)sizeWithoutCompression)/sizeWithLossyCompression);
         }
     }
     private int[] checkTestFile(String filename) {
