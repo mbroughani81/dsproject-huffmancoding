@@ -4,6 +4,8 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class HuffmanCoding {
+    private static int ALPHABET_SIZE = 256;
+
     private int[] cnt;
     private HuffmanNode root;
 
@@ -13,20 +15,20 @@ public class HuffmanCoding {
     }
 
     public void code() {
-        int n = 256;
+        PriorityQueue<HuffmanNode> q = new PriorityQueue<HuffmanNode>(ALPHABET_SIZE, new ImplementComparator());
 
-        PriorityQueue<HuffmanNode> q = new PriorityQueue<HuffmanNode>(n, new ImplementComparator());
+        for (int i = 0; i < ALPHABET_SIZE; i++) {
+            if(this.cnt[i] != 0) {    
+                HuffmanNode hn = new HuffmanNode();
 
-        for (int i = 0; i < n; i++) {
-            HuffmanNode hn = new HuffmanNode();
+                hn.c = (char)i;
+                hn.freq = cnt[i];
 
-            hn.c = (char)i;
-            hn.freq = cnt[i];
+                hn.left = null;
+                hn.right = null;
 
-            hn.left = null;
-            hn.right = null;
-
-            q.add(hn);
+                q.add(hn);
+            }
         }
 
         while (q.size() > 1) {
@@ -48,19 +50,21 @@ public class HuffmanCoding {
         }
     }
 
-    public void printCode(HuffmanNode node, String s)) {
-        if (root.left == null && root.right == null && Character.isLetter(root.c)) {
-
-            System.out.println(root.c + "   |  " + s);
-      
-            return;
-          }
-          printCode(root.left, s + "0");
-          printCode(root.right, s + "1");
+    private int printCode(HuffmanNode node, String curCodeword) {
+        if (node == null)
+            return 0;
+        if (node.left == null && node.right == null) {
+            System.out.println(node.c + " ==> " + curCodeword);
+            return curCodeword.length() * node.freq;
+        }
+        int sum = 0;
+        sum += printCode(node.left, curCodeword + "0");
+        sum += printCode(node.right, curCodeword + "1");
+        return sum;
     }
 
     public int getNumberOfBitsInEncoded() {
-        return 0;
+        return printCode(this.root, "");
     }
 }
 
