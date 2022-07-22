@@ -7,14 +7,17 @@ public class HuffmanCoding {
     private static int ALPHABET_SIZE = 256;
 
     private int[] cnt;
+    private int cntAll;
     private HuffmanNode root;
 
     public HuffmanCoding(int[] cnt) {
         this.cnt = cnt;
         this.root = null;
+        for (int i = 0; i < ALPHABET_SIZE; i++)
+            this.cntAll += this.cnt[i];
     }
 
-    public void code(boolean isLossy) {
+    public void code() {
         PriorityQueue<HuffmanNode> q = new PriorityQueue<HuffmanNode>(ALPHABET_SIZE, new ImplementComparator());
 
         for (int i = 0; i < ALPHABET_SIZE; i++) {
@@ -50,23 +53,29 @@ public class HuffmanCoding {
         }
     }
 
-    private int printCode(HuffmanNode node, String curCodeword, boolean isPrinting) {
+    private int printCode(HuffmanNode node, String curCodeword, boolean isLossy, boolean isPrinting) {
         if (node == null)
             return 0;
         if (node.left == null && node.right == null) {
+            if (isLossy) {
+                if (((double)node.freq) / this.cntAll > 0.05) {
+                    System.out.printf("CHARACTER '%c' is removed!%n", node.c);
+                    return 0;
+                }
+            }
             if (isPrinting) {
                 System.out.println(node.c + " ==> " + curCodeword);
             }
             return curCodeword.length() * node.freq;
         }
         int sum = 0;
-        sum += printCode(node.left, curCodeword + "0", isPrinting);
-        sum += printCode(node.right, curCodeword + "1", isPrinting);
+        sum += printCode(node.left, curCodeword + "0", isLossy, isPrinting);
+        sum += printCode(node.right, curCodeword + "1", isLossy, isPrinting);
         return sum;
     }
 
-    public int getNumberOfBitsInEncoded(boolean isPrinting) {
-        return printCode(this.root, "", isPrinting);
+    public int getNumberOfBitsInEncoded(boolean isLossy, boolean isPrinting) {
+        return printCode(this.root, "", isLossy, isPrinting);
     }
 }
 

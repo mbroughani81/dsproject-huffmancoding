@@ -20,12 +20,12 @@ public class TestChecker {
             int sizeWithoutCompression = 8 * sum;
 
             HuffmanCoding losslessHuffmanCoding = new HuffmanCoding(cnt);
-            losslessHuffmanCoding.code(false);
-            int sizeWithLosslessCompression = losslessHuffmanCoding.getNumberOfBitsInEncoded(false);
+            losslessHuffmanCoding.code();
+            int sizeWithLosslessCompression = losslessHuffmanCoding.getNumberOfBitsInEncoded(false, false);
 
             HuffmanCoding lossyHuffmanCoding = new HuffmanCoding(cnt);
-            lossyHuffmanCoding.code(true);
-            int sizeWithLossyCompression = lossyHuffmanCoding.getNumberOfBitsInEncoded(false);            
+            lossyHuffmanCoding.code();
+            int sizeWithLossyCompression = lossyHuffmanCoding.getNumberOfBitsInEncoded(true, false);            
 
             System.out.printf("#### Results for test %d ####%n", i);
             System.out.printf(">>>>Entropy of given file: %.5f bits/symbol%n", EntropyCalculator.calculateEntropy(cnt));
