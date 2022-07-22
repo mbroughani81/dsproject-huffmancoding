@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 
+import huffmancoding.compression.EntropyCalculator;
 import huffmancoding.compression.HuffmanCoding;
 
 public class TestChecker {
@@ -22,8 +23,10 @@ public class TestChecker {
             huffmanCoding.code();
             int sizeWithCompression = huffmanCoding.getNumberOfBitsInEncoded();
 
-            System.out.println(">>>>Number of bits in uncompressed file: " + sizeWithoutCompression);
-            System.out.println(">>>>Number of bits in compressed file: " + sizeWithCompression);
+            System.out.printf(">>>>Entropy of given file: %.5f bits/symbol%n", EntropyCalculator.calculateEntropy(cnt));
+            System.out.printf(">>>>Number of bits in uncompressed file: %d, %.5f bits/symbol%n", sizeWithoutCompression, ((double)sizeWithoutCompression)/sum);
+            System.out.printf(">>>>Number of bits in compressed file: %d, %.5f bits/symbol%n", sizeWithCompression, ((double)sizeWithCompression)/sum);
+            System.out.printf(">>>>Compression ratio is : %.2f:1 %n", ((double)sizeWithoutCompression)/sizeWithCompression);
         }
     }
     private int[] checkTestFile(String filename) {
