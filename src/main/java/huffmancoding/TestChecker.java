@@ -11,6 +11,8 @@ public class TestChecker {
     public static void run() {
         TestChecker tc = new TestChecker();
         for(int i = 0; i < 10; i++) {
+            System.out.printf("#### Results for test %d ####%n", i);
+
             int[] cnt = tc.checkTestFile(i + ".txt");
             int sum = 0;
             for (int t = 0; t < cnt.length; t++) {
@@ -27,7 +29,6 @@ public class TestChecker {
             lossyHuffmanCoding.code();
             int sizeWithLossyCompression = lossyHuffmanCoding.getNumberOfBitsInEncoded(true, false);            
 
-            System.out.printf("#### Results for test %d ####%n", i);
             System.out.printf(">>>>Entropy of given file: %.5f bits/symbol%n", EntropyCalculator.calculateEntropy(cnt));
             System.out.printf(">>>>Number of bits in uncompressed file: %d, %.5f bits/symbol%n", sizeWithoutCompression, ((double)sizeWithoutCompression)/sum);
             System.out.printf(">>>>Number of bits in lossless compressed file: %d, %.5f bits/symbol%n", sizeWithLosslessCompression, ((double)sizeWithLosslessCompression)/sum);
